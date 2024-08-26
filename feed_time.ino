@@ -1,0 +1,3 @@
+bool feedIntervalIsElapsed() {
+  return false;
+}

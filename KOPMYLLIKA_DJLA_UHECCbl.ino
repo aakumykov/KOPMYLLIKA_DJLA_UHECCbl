@@ -1,3 +1,6 @@
+#include <EncButton.h>
+
+Button feedButton(4);
 
 void setup() {
 
@@ -5,7 +8,9 @@ void setup() {
 
 
 void loop() {
-  if (buttonIsPressed()) {
+  feedButton.tick();
+
+  if (feedButton.click()) {
     if (portionIsNotDrained()) {
       playAllowSound();
       feedPieceOfPortion();
@@ -19,3 +24,4 @@ void loop() {
     }
   }
 }
+
