@@ -1,17 +1,33 @@
+#define PORTION_MEMORY_KEY 'p'
 
-uint8_t portionSize = 100;
-uint8_t portionFeededSize = 0;
-uint8_t portionPiece = 10;
+struct Portion {
+  uint8_t size;
+  uint8_t feeded;
+  uint8_t piece;
+};
+
+Portion portion = (Portion) {100, 0, 10};
+
+EEManager portionMemory(portion);
+
+void setupPortion() {
+  portionMemory.begin(0, PORTION_MEMORY_KEY);
+}
 
 void feedPieceOfPortion() {
-  feedPieceOfPortionReal();
-  portionFeededSize += portionPiece;
+  portion.feeded += portion.piece;
+  portionMemory.update();
 }
 
 bool portionIsNotDrained() {
-  return (portionSize - portionFeededSize) > 0;
+  return portion.feeded < portion.size;
 }
 
-void feedPieceOfPortionReal() {
-
+void logPortionInfo() {
+  Serial.print("Portion { ");
+  Serial.print("size: "); Serial.print(portion.size);
+  Serial.print(", feeded: "); Serial.print(portion.feeded);
+  Serial.print(", piece: "); Serial.print(portion.piece);
+  Serial.print(" }");
+  Serial.println();
 }
