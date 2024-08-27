@@ -1,11 +1,11 @@
-#include <EEManager.h>
 #include <EncButton.h>
+#include <EEManager.h>
 
 Button feedButton(4);
 
-
 void setup() {
   setupSerial();
+  setupFeedTime();
   setupPortion();
 }
 
@@ -18,12 +18,15 @@ void loop() {
     logButtonClick();
     logPortionInfo();
 
-    if (portionIsNotDrained() || feedIntervalIsElapsed()) 
+    if (portionIsNotDrained()) 
     {
-      playAllowSound();
-      feedPieceOfPortion();
-      logAllowEvent();
+      giveCatMeal();
     } 
+    else if (feedIntervalIsElapsed()) {
+      resetTimeParams();
+      resetPortionParams();
+      giveCatMeal();
+    }
     else 
     {
       playDenySound();
@@ -32,6 +35,12 @@ void loop() {
   }
 }
 
+
+void giveCatMeal() {
+  playAllowSound();
+  feedPieceOfPortion();
+  logAllowEvent();
+}
 
 void logButtonClick() {
   Serial.println("Button clicked.");

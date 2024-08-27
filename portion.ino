@@ -8,15 +8,16 @@ struct Portion {
 
 Portion portion = (Portion) {100, 0, 10};
 
-EEManager portionMemory(portion);
+EEManager portionMem(portion);
 
 void setupPortion() {
-  portionMemory.begin(0, PORTION_MEMORY_KEY);
+  Serial.println("setupPortion()");
+  portionMem.begin(0, PORTION_MEMORY_KEY);
 }
 
 void feedPieceOfPortion() {
   portion.feeded += portion.piece;
-  portionMemory.update();
+  portionMem.update();
 }
 
 bool portionIsNotDrained() {
@@ -30,4 +31,9 @@ void logPortionInfo() {
   Serial.print(", piece: "); Serial.print(portion.piece);
   Serial.print(" }");
   Serial.println();
+}
+
+void resetPortionParams() {
+  portion.feeded = 0;
+  portionMem.updateNow();
 }
